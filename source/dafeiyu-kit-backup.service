@@ -1,0 +1,7 @@
+[Unit]
+Description=Dafeiyu Community Local Backup
+
+[Service]
+Type=oneshot
+UMask=0077
+ExecStart=/opt/dafeiyu-kit/venv/bin/python /opt/dafeiyu-kit/source/manage.py backup

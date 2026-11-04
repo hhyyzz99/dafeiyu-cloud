@@ -1,0 +1,24 @@
+[Unit]
+Description=Dafeiyu onboarding and bot supervisor
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=dafeiyu-onboard
+Group=dafeiyu-onboard
+WorkingDirectory=/opt/dafeiyu-onboard/state/instance
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/dafeiyu-onboard/venv/bin/python /opt/dafeiyu-onboard/source/server.py
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=25
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/dafeiyu-onboard/state
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,9 @@
+[Unit]
+Description=Back up Dafeiyu databases and settings
+ConditionPathExists=/opt/dafeiyu-onboard/state/configured.ready
+[Service]
+Type=oneshot
+User=dafeiyu-onboard
+Group=dafeiyu-onboard
+UMask=0077
+ExecStart=/opt/dafeiyu-onboard/venv/bin/python /opt/dafeiyu-onboard/source/manage.py backup --base /opt/dafeiyu-onboard/state

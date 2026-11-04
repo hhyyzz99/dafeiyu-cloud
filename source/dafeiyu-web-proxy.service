@@ -1,0 +1,15 @@
+[Unit]
+Description=Dafeiyu HTTPS gateway
+After=network-online.target
+
+[Service]
+Type=forking
+PIDFile=/opt/dafeiyu-onboard/nginx.pid
+ExecStartPre=/usr/sbin/nginx -t -c /opt/dafeiyu-onboard/nginx.conf
+ExecStart=/usr/sbin/nginx -c /opt/dafeiyu-onboard/nginx.conf
+ExecReload=/usr/sbin/nginx -c /opt/dafeiyu-onboard/nginx.conf -s reload
+ExecStop=/usr/sbin/nginx -c /opt/dafeiyu-onboard/nginx.conf -s quit
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

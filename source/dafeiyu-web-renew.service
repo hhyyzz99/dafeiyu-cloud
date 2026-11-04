@@ -1,0 +1,12 @@
+[Unit]
+Description=Renew Dafeiyu short-lived IP certificate
+After=network-online.target dafeiyu-web-proxy.service
+StartLimitIntervalSec=3600
+StartLimitBurst=3
+
+[Service]
+Type=oneshot
+Restart=on-failure
+RestartSec=120
+TimeoutStartSec=300
+ExecStart=/opt/dafeiyu-onboard/venv/bin/python /opt/dafeiyu-onboard/source/certbot_ipv4.py renew --quiet --config-dir /opt/dafeiyu-onboard/acme --work-dir /opt/dafeiyu-onboard/acme-work --logs-dir /opt/dafeiyu-onboard/acme-logs --deploy-hook "systemctl reload dafeiyu-web-proxy"

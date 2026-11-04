@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily Dafeiyu Community Backup
+
+[Timer]
+OnCalendar=*-*-* 04:25:00 Asia/Shanghai
+Persistent=true
+Unit=dafeiyu-kit-backup.service
+
+[Install]
+WantedBy=timers.target

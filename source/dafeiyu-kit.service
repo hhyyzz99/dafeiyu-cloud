@@ -1,0 +1,24 @@
+[Unit]
+Description=Dafeiyu Community DeepSeek Bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=dafeiyu-kit
+Group=dafeiyu-kit
+WorkingDirectory=/opt/dafeiyu-kit/instance
+Environment=ASTRBOT_ROOT=/opt/dafeiyu-kit/instance
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/dafeiyu-kit/venv/bin/astrbot run
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/dafeiyu-kit/instance
+
+[Install]
+WantedBy=multi-user.target
