@@ -1,0 +1,6 @@
+name: astrbot_plugin_tom_fish
+display_name: 大肥鱼鱼塘
+desc: 大肥鱼的人设辅助、按群友隔离的可管理记忆、互动记录、时间和计算工具。
+version: v1.1.1
+author: TOM
+astrbot_version: '>=4.29.4,<4.30.0'
