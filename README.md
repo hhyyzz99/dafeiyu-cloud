@@ -6,7 +6,7 @@
 
 ## 开始部署
 
-**[点击进入阿里云一键部署](https://ros.console.aliyun.com/cn-beijing/stacks/create?templateType=url&templateUrl=https%3A%2F%2Fraw.githubusercontent.com%2Fhhyyzz99%2Fdafeiyu-cloud%2Fv1.1.0-beta3%2Fdeployment%2Fdafeiyu-ros-1.1.0-beta3.json&isSimplified=true&stackNamePrefix=Dafeiyu&pageTitle=%7B%22zh-cn%22%3A+%22%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2%E5%A4%A7%E8%82%A5%E9%B1%BC%22%7D&productNavBar=disabled)** · [下载当前版本](https://github.com/hhyyzz99/dafeiyu-cloud/releases/tag/v1.1.0-beta3)
+**[点击进入阿里云一键部署](https://ros.console.aliyun.com/cn-beijing/stacks/create?templateType=url&templateUrl=https%3A%2F%2Fgithub.com%2Fhhyyzz99%2Fdafeiyu-cloud%2Freleases%2Fdownload%2Fv1.1.0-beta3%2Fdafeiyu-ros-1.1.0-beta3.json&isSimplified=true&stackNamePrefix=Dafeiyu&pageTitle=%7B%22zh-cn%22%3A+%22%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2%E5%A4%A7%E8%82%A5%E9%B1%BC%22%7D&productNavBar=disabled)** · [下载当前版本](https://github.com/hhyyzz99/dafeiyu-cloud/releases/tag/v1.1.0-beta3)
 
 1. 准备已适配的同款：阿里云轻量应用服务器，**北京地域、智能体专用型 2 核 6 GB、30 GB 系统盘、Hermes Agent 应用镜像**。确认购买页包含模型调用额度；费用和供应情况以实际订单为准。
 2. 在服务器概览复制 **实例 ID**。打开上方链接，在自己的阿里云账号中填写实例 ID，阅读证书协议，同意后创建资源栈。模板查询已有实例并安装程序，不会购买或重置服务器。
@@ -46,6 +46,8 @@
 ## 下载与校验
 
 Release 中的安装包与已验证版本逐字节一致。ROS 模板固定版本和 SHA-256，下载校验通过后才执行。GitHub 无法访问时可能导致部署失败；请保留原始报错，不要通过关闭 HTTPS 校验或使用未知镜像站绕过。
+
+当前一键部署入口从 GitHub Release 读取模板和安装包。2026-11-05 已在清空后的同款服务器完成自动安装、可信 HTTPS 开通、套餐模型激活、QQ 绑定和实际私聊回复；详细范围见 [验证记录](VALIDATION.md)。早期分享链接及最初 Release 附件里的 `deployment.json` 使用 raw 文件地址，可能在创建资源栈时出现连接重置，请改用本页上方的一键部署链接。
 
 ```text
 3df9c818617d247113c6fab01b92889caf1543f211e4f42e0c00bc2016bd0654  dafeiyu-web-1.1.0-beta3.run
