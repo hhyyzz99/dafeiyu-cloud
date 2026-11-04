@@ -50,7 +50,7 @@ def prepare(repository, output):
     base = 'https://github.com/'+repository+'/releases/download/'+tag
     installer_name='dafeiyu-web-'+version+'.run'
     template_name='dafeiyu-ros-'+version+'.json'
-    template_url='https://raw.githubusercontent.com/'+repository+'/'+tag+'/deployment/'+template_name
+    template_url=base+'/'+template_name
     template=module.template(base+'/'+installer_name,RELEASE['installer_sha256'])
     template_bytes=json.dumps(template,ensure_ascii=False,indent=2).encode()
     params={'templateType':'url','templateUrl':template_url,'isSimplified':'true','stackNamePrefix':'Dafeiyu',
@@ -70,6 +70,7 @@ def prepare(repository, output):
         'README.md':readme.encode(),'.gitignore':(ROOT/'.gitignore').read_bytes(),
         'release.json':(ROOT/'release.json').read_bytes(),'NOTICE.md':(ROOT/'NOTICE.md').read_bytes(),
         'README.template.md':(ROOT/'README.template.md').read_bytes(),
+        'VALIDATION.md':(ROOT/'VALIDATION.md').read_bytes(),
         'tools/prepare_release.py':Path(__file__).read_bytes(),
         'tools/test_release.py':(ROOT/'tools/test_release.py').read_bytes(),
         'deployment/'+template_name:template_bytes,
