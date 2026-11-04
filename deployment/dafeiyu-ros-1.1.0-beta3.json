@@ -1,0 +1,158 @@
+{
+  "ROSTemplateFormatVersion": "2015-09-01",
+  "Description": {
+    "zh-cn": "大肥鱼网页开通版：在已购买的北京同款轻量服务器上安装；不会新购服务器或重置系统。兼容 Hermes 原有的 80 端口服务，需要公网 80/443 可访问且 443 未被其他网站占用。"
+  },
+  "Parameters": {
+    "InstanceId": {
+      "Type": "String",
+      "Label": {
+        "zh-cn": "你的轻量服务器实例 ID"
+      },
+      "Description": {
+        "zh-cn": "在北京地域的服务器概览中复制实例 ID（32 位字母数字），不是公网 IP。仅选择本次推广的 2 核 6 GB 智能体专用型。"
+      },
+      "AllowedPattern": "[a-f0-9]{32}"
+    },
+    "CertificateAgreement": {
+      "Type": "String",
+      "Label": {
+        "zh-cn": "免费 HTTPS 证书订户协议"
+      },
+      "Description": {
+        "zh-cn": "将为你的服务器公网 IP 申请免费证书并自动续期。请先阅读 https://letsencrypt.org/repository/ ，同意后选择下方选项。"
+      },
+      "AllowedValues": [
+        "我已阅读并同意 Let’s Encrypt 订户协议"
+      ]
+    }
+  },
+  "Resources": {
+    "ExistingServer": {
+      "Type": "DATASOURCE::SWAS::Instance",
+      "Properties": {
+        "InstanceId": {
+          "Ref": "InstanceId"
+        },
+        "RefreshOptions": "Always"
+      }
+    },
+    "InstallDafeiyu": {
+      "Type": "ALIYUN::SWAS::RunCommand",
+      "Properties": {
+        "InstanceId": {
+          "Ref": "InstanceId"
+        },
+        "Type": "RunShellScript",
+        "Name": "dafeiyu-web-1.1.0-beta3",
+        "Sync": true,
+        "Timeout": 1800,
+        "WorkingUser": "root",
+        "CommandContent": {
+          "Fn::Join": [
+            "",
+            [
+              "#!/bin/bash\nset -euo pipefail\numask 077\nwork=$(mktemp -d /tmp/dafeiyu-download.XXXXXXXX)\ntrap 'rm -rf -- \"$work\"' EXIT\ncurl --silent --show-error --fail --location --proto '=https' --tlsv1.2 --retry 3 --connect-timeout 15 --max-time 180 -o \"$work/install.run\" 'https://github.com/hhyyzz99/dafeiyu-cloud/releases/download/v1.1.0-beta3/dafeiyu-web-1.1.0-beta3.run'\necho '3df9c818617d247113c6fab01b92889caf1543f211e4f42e0c00bc2016bd0654  '\"$work/install.run\" | sha256sum -c --status -\nif bash \"$work/install.run\" --public-ip '",
+              {
+                "Fn::GetAtt": [
+                  "ExistingServer",
+                  "PublicIpAddress"
+                ]
+              },
+              "' --agree-acme > \"$work/install.log\" 2>&1; then\n  /opt/dafeiyu-onboard/venv/bin/python /opt/dafeiyu-onboard/source/provision.py result '",
+              {
+                "Fn::GetAtt": [
+                  "ExistingServer",
+                  "PublicIpAddress"
+                ]
+              },
+              "'\nelse\n  python3 - \"$work/install.log\" <<'PY'\nimport json,sys\nfrom pathlib import Path\nprint(json.dumps({'owner_url':'','status':'安装失败，请查看详情并稍后重新部署。','detail':Path(sys.argv[1]).read_text(errors='replace')[-1500:]},ensure_ascii=False))\nPY\n  exit 1\nfi\n"
+            ]
+          ]
+        }
+      }
+    },
+    "VerifyInstallation": {
+      "Type": "ALIYUN::ROS::Assert",
+      "Properties": {
+        "Operation": "Equal",
+        "Values": [
+          {
+            "Fn::Select": [
+              "ExitCode",
+              {
+                "Fn::GetAtt": [
+                  "InstallDafeiyu",
+                  "InvokeResult"
+                ]
+              }
+            ]
+          },
+          0
+        ],
+        "AbortCreation": true,
+        "ErrorMessage": "大肥鱼安装未完成，请查看输出中的安装结果；处理后可重新部署，已有配置会保留。"
+      }
+    }
+  },
+  "Outputs": {
+    "OpenYourFish": {
+      "Description": "点击开通你的大肥鱼。首次链接含一次性开通码，仅自己使用，请勿公开。",
+      "Value": {
+        "Fn::GetJsonValue": [
+          "owner_url",
+          {
+            "Fn::Base64Decode": {
+              "Fn::Select": [
+                "Output",
+                {
+                  "Fn::GetAtt": [
+                    "InstallDafeiyu",
+                    "InvokeResult"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "InstallStatus": {
+      "Description": "以此状态和开通链接判断实际安装结果。",
+      "Value": {
+        "Fn::GetJsonValue": [
+          "status",
+          {
+            "Fn::Base64Decode": {
+              "Fn::Select": [
+                "Output",
+                {
+                  "Fn::GetAtt": [
+                    "InstallDafeiyu",
+                    "InvokeResult"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "InstallResult": {
+      "Description": "安装结果（已自动解码）。请勿公开其中的专属开通链接。",
+      "Value": {
+        "Fn::Base64Decode": {
+          "Fn::Select": [
+            "Output",
+            {
+              "Fn::GetAtt": [
+                "InstallDafeiyu",
+                "InvokeResult"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}
