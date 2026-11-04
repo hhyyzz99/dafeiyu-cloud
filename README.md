@@ -71,4 +71,4 @@ python -m unittest discover -s source -p "test_*.py"
 
 ## 上游与许可证
 
-AstrBot 是独立开源项目，本仓库不是 AstrBot 或阿里云官方项目。安装程序固定下载 AstrBot 4.29.4，附带 QQ 空 @ 兼容补丁源码。上游许可证及第三方信息见 [第三方说明](source/THIRD_PARTY.md) 和 [AstrBot AGPL-3.0](source/licenses/AstrBot-AGPL-3.0.txt)。第三方组件分别遵循其许可证；本次发布保留现有声明，没有为项目自有文件另行指定新许可证。
+AstrBot 是独立开源项目，本仓库不是 AstrBot 或阿里云官方项目。安装程序固定下载 AstrBot 4.29.4，附带 QQ 空 @ 兼容补丁源码。来源、修改记录与源码说明见 [NOTICE](NOTICE.md)、[第三方说明](source/THIRD_PARTY.md) 和 [AstrBot AGPL-3.0](source/licenses/AstrBot-AGPL-3.0.txt)。AstrBot 及对其代码的修改继续遵守上游许可证；其他组件分别遵循其许可证。使用、再分发或提供修改后的网络服务时，保留相关声明，并按许可证向相应用户提供源码获取入口。
